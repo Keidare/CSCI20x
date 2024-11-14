@@ -103,24 +103,20 @@ def simulated_annealing(cities, initial_temp=10000, cooling_rate=0.9995, stop_te
 def plot_results(cities, path, costs, times, probabilities):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
 
-    # Final path visualization
     axs[0, 0].plot([cities[i][0] for i in path + [path[0]]],
                    [cities[i][1] for i in path + [path[0]]], marker='o')
     axs[0, 0].set_title("Best TSP Path")
 
-    # Cost over iterations
     axs[0, 1].plot(costs, label="Total Cost")
     axs[0, 1].set_title("Total Cost per Iteration")
     axs[0, 1].set_xlabel("Iteration")
     axs[0, 1].set_ylabel("Total Cost")
 
-    # Time per iteration
     axs[1, 0].plot(times, costs, label="Time vs Cost")
     axs[1, 0].set_title("Total Cost Over Time")
     axs[1, 0].set_xlabel("Time (seconds)")
     axs[1, 0].set_ylabel("Total Cost")
 
-    # Acceptance Probability over iterations
     axs[1, 1].plot(probabilities, label="Acceptance Probability")
     axs[1, 1].set_title("Acceptance Probability per Iteration")
     axs[1, 1].set_xlabel("Iteration")
@@ -133,13 +129,11 @@ def plot_results(cities, path, costs, times, probabilities):
 n_cities = 20
 cities = generate_cities(n_cities)
 
-# Run Simulated Annealing
 best_path, best_cost, costs, times, probabilities, start_time = simulated_annealing(cities)
 
 print(f"Best path cost: {best_cost}")
 print(f"Time taken: {time.time() - start_time} seconds")
 
-# Plot results
 plot_results(cities, best_path, costs, times, probabilities)
 
 
