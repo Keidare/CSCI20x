@@ -1,17 +1,74 @@
+"""
+Swailem Neil Angelo G. Lumba
+203094
+November 14, 2024
+
+I have not discussed the Python language code in my program
+with anyone other than my instructor or the teaching assistants
+assigned to this course.
+
+I have not used Python language code obtained from another student,
+or any other unauthorized source, either modified or unmodified.
+
+If any Python language code or documentation used in my program
+was obtained from another source, such as a textbook or website,
+that has been clearly noted with a proper citation in the comments
+of my program.
+
+"""
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import math
 import time
 
+'''
+Generate n random points (x, y) within the specified area
+Return the array of cities
+'''
+
 def generate_cities(n, width=100, height=100):
     return np.random.rand(n, 2) * [width, height]
 
+
+'''
+Compute the Euclidean distance between coordinates c1 and c2
+Return the distance
+'''
 def distance(c1, c2):
     return np.sqrt(np.sum((c1 - c2) ** 2))
+
+'''
+Initialize total distance to 0
+For each city in the path:
+    Compute the distance to the next city
+Add the distance to the starting city (for round trip)
+Return the total distance
+'''
 
 def total_cost(path, cities):
     return sum(distance(cities[path[i]], cities[path[(i + 1) % len(path)]]) for i in range(len(path)))
 
+'''
+Initialize a random path and calculate its cost
+Set temperature = initial_temp
+
+While temperature > stop_temp:
+    Randomly select two cities and swap them in the path
+    Calculate the new path cost
+    Calculate the cost difference between new and current paths
+    
+    If new cost is better:
+        Accept new path
+    Else:
+        Accept with probability P = exp(-cost_diff / temperature)
+    
+    Update best path and cost if new path is better
+    Reduce temperature by multiplying with cooling_rate
+
+Return best path, best cost, and metrics for visualization
+'''
 def simulated_annealing(cities, initial_temp=10000, cooling_rate=0.9995, stop_temp=1e-8):
     n = len(cities)
     current_path = list(range(n))
