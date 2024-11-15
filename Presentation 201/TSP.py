@@ -103,8 +103,12 @@ def simulated_annealing(cities, initial_temp=10000, cooling_rate=0.9995, stop_te
 def plot_results(cities, path, costs, times, probabilities):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
 
-    axs[0, 0].plot([cities[i][0] for i in path + [path[0]]],
-                   [cities[i][1] for i in path + [path[0]]], marker='o')
+    # Start City is red
+    x_coords = [cities[i][0] for i in path + [path[0]]]
+    y_coords = [cities[i][1] for i in path + [path[0]]]
+    axs[0, 0].plot(x_coords, y_coords, marker='o', color='blue', markerfacecolor='blue', markersize=5)
+    axs[0, 0].plot(cities[path[0]][0], cities[path[0]][1], 'ro', markersize=8, label="Start City")
+    axs[0, 0].legend()
     axs[0, 0].set_title("Best TSP Path")
 
     axs[0, 1].plot(costs, label="Total Cost")
