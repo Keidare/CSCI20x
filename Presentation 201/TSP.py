@@ -79,25 +79,28 @@ def simulated_annealing(cities, initial_temp=10000, cooling_rate=0.9995, stop_te
     costs, times, probabilities = [], [], []
     
     start_time = time.time()
-    while temperature > stop_temp:
-        i, j = np.random.randint(0, n, 2)
-        new_path = current_path[:]
-        new_path[i], new_path[j] = new_path[j], new_path[i]
-        new_cost = total_cost(new_path, cities)
-        cost_diff = new_cost - current_cost
-        
-        # Acceptance Probability
-        if cost_diff < 0 or np.random.rand() < math.exp(-cost_diff / temperature):
-            current_path, current_cost = new_path, new_cost
-            probabilities.append(math.exp(-cost_diff / temperature) if cost_diff > 0 else 1)
+    # Open the log file for writing
+    with open("SA_Log.txt", "w") as log:
+        while temperature > stop_temp:
+            i, j = np.random.randint(0, n, 2)
+            new_path = current_path[:]
+            new_path[i], new_path[j] = new_path[j], new_path[i]
+            new_cost = total_cost(new_path, cities)
+            cost_diff = new_cost - current_cost
+            log.write(f"{len(costs)}, Current Cost:{current_cost}, Best Cost:{best_cost}\n")
             
-            if new_cost < best_cost:
-                best_path, best_cost = new_path[:], new_cost
-        
-        costs.append(current_cost)
-        times.append(time.time() - start_time)
-        temperature *= cooling_rate
-    
+            # Acceptance Probability
+            if cost_diff < 0 or np.random.rand() < math.exp(-cost_diff / temperature):
+                current_path, current_cost = new_path, new_cost
+                probabilities.append(math.exp(-cost_diff / temperature) if cost_diff > 0 else 1)
+                
+                if new_cost < best_cost:
+                    best_path, best_cost = new_path[:], new_cost
+            
+            costs.append(current_cost)
+            times.append(time.time() - start_time)
+            temperature *= cooling_rate
+
     return best_path, best_cost, costs, times, probabilities, start_time
 
 def plot_results(cities, path, costs, times, probabilities):
@@ -130,7 +133,7 @@ def plot_results(cities, path, costs, times, probabilities):
     plt.show()
 
 # Number of cities
-n_cities = 100
+n_cities = 4
 cities = generate_cities(n_cities)
 
 best_path, best_cost, costs, times, probabilities, start_time = simulated_annealing(cities)
