@@ -130,7 +130,7 @@ def plot_results(cities, path, costs, times, probabilities):
     plt.show()
 
 # Number of cities
-n_cities = 20
+n_cities = 100
 cities = generate_cities(n_cities)
 
 best_path, best_cost, costs, times, probabilities, start_time = simulated_annealing(cities)
